@@ -4,6 +4,10 @@ docs/
 # Python
 .venv/
 __pycache__/
+.ruff_cache/
+
+# Переменные окружения
+.env
 
 # Django
 db.sqlite3

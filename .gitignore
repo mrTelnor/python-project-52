@@ -12,3 +12,6 @@ __pycache__/
 # Django
 db.sqlite3
 staticfiles/
+
+# Tailwind: собранный CSS — артефакт сборки
+assets/css/tailwind.css

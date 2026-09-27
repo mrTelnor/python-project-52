@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tailwind_cli',
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,15 @@ STATIC_URL = 'static/'
 
 # Сюда collectstatic собирает статику, отсюда её раздаёт WhiteNoise.
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Исходная статика проекта. Сюда tailwind build пишет css/tailwind.css.
+STATICFILES_DIRS = [BASE_DIR / 'assets']
+
+# Tailwind: версия закреплена, чтобы сборка на Render не менялась сама.
+# Исходный CSS лежит вне .django_tailwind_cli/ (там .gitignore со *)
+# и вне STATICFILES_DIRS.
+TAILWIND_CLI_VERSION = '4.3.3'
+TAILWIND_CLI_SRC_CSS = 'static_src/tailwind.css'
 
 STORAGES = {
     'default': {

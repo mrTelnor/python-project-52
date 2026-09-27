@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="utf-8">
-    <title>Менеджер задач</title>
-  </head>
-  <body>
-    <h1>Привет от Хекслета!</h1>
-  </body>
-</html>
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block content %}
+  <div class="rounded border border-gray-200 bg-gray-50 p-6 sm:p-10">
+    <h1 class="text-3xl sm:text-4xl">{% translate "Hello from Hexlet!" %}</h1>
+    <p class="mt-2 text-xl text-gray-600">{% translate "Practical programming courses" %}</p>
+    <hr class="my-6 border-gray-300">
+    <a href="https://ru.hexlet.io" class="inline-block rounded bg-blue-600 px-5 py-3 text-lg text-white hover:bg-blue-700">{% translate "Learn more" %}</a>
+  </div>
+{% endblock %}

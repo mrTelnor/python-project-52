@@ -1,0 +1,38 @@
+{% load i18n tailwind_cli %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% translate "Task manager" %}{% endblock %}</title>
+    {% tailwind_css %}
+  </head>
+  <body class="flex min-h-screen flex-col bg-white text-black">
+    <nav class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 bg-gray-100 px-6 py-3">
+      <div class="flex flex-wrap items-center gap-x-4">
+        <a href="{% url 'index' %}" class="mr-2 text-lg font-bold">{% translate "Task manager" %}</a>
+        <a href="/users/" class="hover:text-gray-600">{% translate "Users" %}</a>
+      </div>
+      <div class="flex flex-wrap items-center gap-x-4">
+        <a href="/login/" class="hover:text-gray-600">{% translate "Log in" %}</a>
+        <a href="/registration/" class="hover:text-gray-600">{% translate "Sign up" %}</a>
+      </div>
+    </nav>
+
+    <main class="mx-auto w-full max-w-5xl grow px-4 py-4">
+      {% for message in messages %}
+        <div role="alert" class="mb-6 rounded border px-4 py-3 {% if message.level_tag == 'success' %}border-green-300 bg-green-50 text-green-800{% elif message.level_tag == 'error' %}border-red-300 bg-red-50 text-red-800{% else %}border-blue-300 bg-blue-50 text-blue-800{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mx-auto w-full max-w-5xl px-4">
+      <div class="border-t border-gray-300 py-6">
+        <a href="https://ru.hexlet.io" class="hover:text-gray-600">Hexlet</a>
+      </div>
+    </footer>
+  </body>
+</html>

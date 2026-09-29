@@ -2,7 +2,7 @@ install:
 	uv sync
 
 tailwind-build:
-	uv run python manage.py tailwind build
+	uv run python manage.py tailwind build --force
 
 collectstatic:
 	uv run python manage.py collectstatic --no-input

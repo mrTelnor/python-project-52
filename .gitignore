@@ -13,5 +13,6 @@ __pycache__/
 db.sqlite3
 staticfiles/
 
-# Tailwind: собранный CSS — артефакт сборки
+# Tailwind: собранный CSS и скачанный бинарник — артефакты сборки
 assets/css/tailwind.css
+.django_tailwind_cli/

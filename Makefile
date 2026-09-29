@@ -1,13 +1,16 @@
 install:
 	uv sync
 
+tailwind-build:
+	uv run python manage.py tailwind build
+
 collectstatic:
 	uv run python manage.py collectstatic --no-input
 
 migrate:
 	uv run python manage.py migrate
 
-setup: install collectstatic migrate
+setup: install tailwind-build collectstatic migrate
 
 build:
 	./build.sh
@@ -21,4 +24,4 @@ start:
 lint:
 	uv run ruff check
 
-.PHONY: install collectstatic migrate setup build render-start start lint
+.PHONY: install tailwind-build collectstatic migrate setup build render-start start lint

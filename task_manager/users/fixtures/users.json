@@ -1,0 +1,38 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "tyrion",
+      "first_name": "Tyrion",
+      "last_name": "Lannister",
+      "password": "pbkdf2_sha256$1500000$Q33XKax2HA26YjK4dGtkwu$3spSooIiCzGsRImsyh221PT/UZnirnSUd8XIwOYVnOo=",
+      "is_active": true,
+      "date_joined": "2026-09-30T10:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "arya",
+      "first_name": "Arya",
+      "last_name": "Stark",
+      "password": "pbkdf2_sha256$1500000$Q33XKax2HA26YjK4dGtkwu$3spSooIiCzGsRImsyh221PT/UZnirnSUd8XIwOYVnOo=",
+      "is_active": true,
+      "date_joined": "2026-09-30T10:05:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "jon",
+      "first_name": "Jon",
+      "last_name": "Snow",
+      "password": "pbkdf2_sha256$1500000$Q33XKax2HA26YjK4dGtkwu$3spSooIiCzGsRImsyh221PT/UZnirnSUd8XIwOYVnOo=",
+      "is_active": true,
+      "date_joined": "2026-09-30T10:10:00Z"
+    }
+  }
+]

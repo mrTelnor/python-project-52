@@ -24,4 +24,7 @@ start:
 lint:
 	uv run ruff check
 
-.PHONY: install tailwind-build collectstatic migrate setup build render-start start lint
+test:
+	uv run python manage.py test
+
+.PHONY: install tailwind-build collectstatic migrate setup build render-start start lint test

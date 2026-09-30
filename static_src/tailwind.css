@@ -2,3 +2,4 @@
 @plugin "@tailwindcss/forms";
 
 @source "../templates";
+@source "../task_manager";

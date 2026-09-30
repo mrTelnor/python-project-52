@@ -1,0 +1,16 @@
+{% csrf_token %}
+{% for error in form.non_field_errors %}
+  <div role="alert" class="mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-800">{{ error }}</div>
+{% endfor %}
+{% for field in form %}
+  <div class="mb-4">
+    <div>{{ field.label_tag }}</div>
+    {% if field.help_text %}
+      <div class="text-sm text-gray-500">{{ field.help_text|safe }}</div>
+    {% endif %}
+    {% for error in field.errors %}
+      <div class="text-sm text-red-600">{{ error }}</div>
+    {% endfor %}
+    {{ field }}
+  </div>
+{% endfor %}

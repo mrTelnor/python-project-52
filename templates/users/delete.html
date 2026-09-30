@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "Delete user" %}{% endblock %}
+
+{% block content %}
+  <h1 class="my-4 text-3xl font-bold">{% translate "Delete user" %}</h1>
+  <p class="mb-4">
+    {% blocktranslate with full_name=object.get_full_name|default:object.username %}Are you sure you want to delete {{ full_name }}?{% endblocktranslate %}
+  </p>
+  <form method="post" action="{% url 'user_delete' object.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="cursor-pointer rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700">{% translate "Yes, delete" %}</button>
+  </form>
+{% endblock %}

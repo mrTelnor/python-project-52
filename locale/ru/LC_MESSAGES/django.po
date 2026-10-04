@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-30 13:41+0300\n"
+"POT-Creation-Date: 2026-10-04 16:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,36 @@ msgstr "Вы не авторизованы! Пожалуйста, выполни
 #: .\task_manager\mixins.py:28
 msgid "You do not have permission to change this user."
 msgstr "У вас нет прав для изменения"
+
+#: .\task_manager\statuses\models.py:6 .\templates\statuses\index.html:14
+msgid "Name"
+msgstr "Имя"
+
+#: .\task_manager\statuses\models.py:7 .\templates\statuses\index.html:15
+#: .\templates\users\index.html:15
+msgid "Created at"
+msgstr "Дата создания"
+
+#: .\task_manager\statuses\models.py:10
+msgid "Status"
+msgstr "Статус"
+
+#: .\task_manager\statuses\models.py:11 .\templates\layout.html:16
+#: .\templates\statuses\index.html:4 .\templates\statuses\index.html:7
+msgid "Statuses"
+msgstr "Статусы"
+
+#: .\task_manager\statuses\views.py:21
+msgid "Status successfully created"
+msgstr "Статус успешно создан"
+
+#: .\task_manager\statuses\views.py:29
+msgid "Status successfully updated"
+msgstr "Статус успешно изменен"
+
+#: .\task_manager\statuses\views.py:36
+msgid "Status successfully deleted"
+msgstr "Статус успешно удален"
 
 #: .\task_manager\users\views.py:22
 msgid "User successfully registered"
@@ -68,15 +98,15 @@ msgstr "Менеджер задач"
 msgid "Users"
 msgstr "Пользователи"
 
-#: .\templates\layout.html:21
+#: .\templates\layout.html:24
 msgid "Log out"
 msgstr "Выход"
 
-#: .\templates\layout.html:24 .\templates\login.html:4 .\templates\login.html:7
+#: .\templates\layout.html:27 .\templates\login.html:4 .\templates\login.html:7
 msgid "Log in"
 msgstr "Вход"
 
-#: .\templates\layout.html:25 .\templates\users\create.html:4
+#: .\templates\layout.html:28 .\templates\users\create.html:4
 #: .\templates\users\create.html:7
 msgid "Sign up"
 msgstr "Регистрация"
@@ -84,6 +114,41 @@ msgstr "Регистрация"
 #: .\templates\login.html:10
 msgid "Sign in"
 msgstr "Войти"
+
+#: .\templates\statuses\create.html:4 .\templates\statuses\create.html:7
+#: .\templates\statuses\index.html:8
+msgid "Create status"
+msgstr "Создать статус"
+
+#: .\templates\statuses\create.html:10
+msgid "Create"
+msgstr "Создать"
+
+#: .\templates\statuses\delete.html:4 .\templates\statuses\delete.html:7
+msgid "Delete status"
+msgstr "Удаление статуса"
+
+#: .\templates\statuses\delete.html:9
+#, python-format
+msgid "Are you sure you want to delete %(name)s?"
+msgstr "Вы уверены, что хотите удалить %(name)s?"
+
+#: .\templates\statuses\delete.html:13 .\templates\users\delete.html:13
+msgid "Yes, delete"
+msgstr "Да, удалить"
+
+#: .\templates\statuses\index.html:26 .\templates\statuses\update.html:10
+#: .\templates\users\index.html:27 .\templates\users\update.html:10
+msgid "Update"
+msgstr "Изменить"
+
+#: .\templates\statuses\index.html:27 .\templates\users\index.html:28
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\templates\statuses\update.html:4 .\templates\statuses\update.html:7
+msgid "Edit status"
+msgstr "Изменение статуса"
 
 #: .\templates\users\create.html:10
 msgid "Register"
@@ -98,10 +163,6 @@ msgstr "Удаление пользователя"
 msgid "Are you sure you want to delete %(full_name)s?"
 msgstr "Вы уверены, что хотите удалить %(full_name)s?"
 
-#: .\templates\users\delete.html:13
-msgid "Yes, delete"
-msgstr "Да, удалить"
-
 #: .\templates\users\index.html:13
 msgid "Username"
 msgstr "Имя пользователя"
@@ -109,18 +170,6 @@ msgstr "Имя пользователя"
 #: .\templates\users\index.html:14
 msgid "Full name"
 msgstr "Полное имя"
-
-#: .\templates\users\index.html:15
-msgid "Created at"
-msgstr "Дата создания"
-
-#: .\templates\users\index.html:27 .\templates\users\update.html:10
-msgid "Update"
-msgstr "Изменить"
-
-#: .\templates\users\index.html:28
-msgid "Delete"
-msgstr "Удалить"
 
 #: .\templates\users\update.html:4 .\templates\users\update.html:7
 msgid "Edit user"

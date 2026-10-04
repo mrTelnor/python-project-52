@@ -1,0 +1,26 @@
+[
+  {
+    "model": "statuses.status",
+    "pk": 1,
+    "fields": {
+      "name": "новый",
+      "created_at": "2026-10-04T10:00:00Z"
+    }
+  },
+  {
+    "model": "statuses.status",
+    "pk": 2,
+    "fields": {
+      "name": "в работе",
+      "created_at": "2026-10-04T10:05:00Z"
+    }
+  },
+  {
+    "model": "statuses.status",
+    "pk": 3,
+    "fields": {
+      "name": "на тестировании",
+      "created_at": "2026-10-04T10:10:00Z"
+    }
+  }
+]

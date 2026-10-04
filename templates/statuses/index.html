@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "Statuses" %}{% endblock %}
+
+{% block content %}
+  <h1 class="my-4 text-3xl font-bold">{% translate "Statuses" %}</h1>
+  <a href="{% url 'status_create' %}" class="mb-4 inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">{% translate "Create status" %}</a>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead class="border-b border-gray-300">
+        <tr>
+          <th class="px-3 py-2">ID</th>
+          <th class="px-3 py-2">{% translate "Name" %}</th>
+          <th class="px-3 py-2">{% translate "Created at" %}</th>
+          <th class="px-3 py-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for status in statuses %}
+          <tr class="border-b border-gray-200 align-top odd:bg-gray-50">
+            <td class="px-3 py-2">{{ status.pk }}</td>
+            <td class="px-3 py-2">{{ status.name }}</td>
+            <td class="px-3 py-2">{{ status.created_at|date:"d.m.Y H:i" }}</td>
+            <td class="px-3 py-2">
+              <a href="{% url 'status_update' status.pk %}" class="block text-blue-600 hover:underline">{% translate "Update" %}</a>
+              <a href="{% url 'status_delete' status.pk %}" class="block text-blue-600 hover:underline">{% translate "Delete" %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -12,6 +12,9 @@
       <div class="flex flex-wrap items-center gap-x-4">
         <a href="{% url 'index' %}" class="mr-2 text-lg font-bold">{% translate "Task manager" %}</a>
         <a href="{% url 'users_index' %}" class="hover:text-gray-600">{% translate "Users" %}</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'statuses_index' %}" class="hover:text-gray-600">{% translate "Statuses" %}</a>
+        {% endif %}
       </div>
       <div class="flex flex-wrap items-center gap-x-4">
         {% if user.is_authenticated %}

@@ -1,0 +1,26 @@
+[
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "name": "Написать отчёт",
+      "description": "Квартальный отчёт для совета",
+      "status": 1,
+      "author": 1,
+      "executor": 3,
+      "created_at": "2026-10-20T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "name": "Проверить стены",
+      "description": "",
+      "status": 2,
+      "author": 2,
+      "executor": null,
+      "created_at": "2026-10-20T10:05:00Z"
+    }
+  }
+]

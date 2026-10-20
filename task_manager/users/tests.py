@@ -177,3 +177,29 @@ class UserDeleteTest(UserTestCase):
 
         self.assertRedirects(response, reverse('login'))
         self.assertTrue(User.objects.filter(pk=self.user.pk).exists())
+
+
+class UserInUseDeleteTest(UserTestCase):
+    # tyrion — автор задачи, jon — её исполнитель.
+    fixtures = ['users.json', 'statuses.json', 'tasks.json']
+
+    def assert_delete_forbidden(self, username):
+        user = User.objects.get(username=username)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse('user_delete', args=[user.pk]), follow=True
+        )
+
+        self.assertRedirects(response, reverse('users_index'))
+        self.assertContains(
+            response,
+            'Невозможно удалить пользователя, потому что он используется',
+        )
+        self.assertTrue(User.objects.filter(pk=user.pk).exists())
+
+    def test_delete_task_author_forbidden(self):
+        self.assert_delete_forbidden('tyrion')
+
+    def test_delete_task_executor_forbidden(self):
+        self.assert_delete_forbidden('jon')

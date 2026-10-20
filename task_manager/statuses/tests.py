@@ -147,3 +147,22 @@ class StatusDeleteTest(StatusTestCase):
         self.assertRedirects(response, reverse('login'))
         self.assertContains(response, NOT_LOGGED_IN)
         self.assertTrue(Status.objects.filter(pk=self.status.pk).exists())
+
+
+class StatusInUseDeleteTest(StatusTestCase):
+    fixtures = ['users.json', 'statuses.json', 'tasks.json']
+
+    def test_delete_status_in_use_forbidden(self):
+        # Статус «новый» назначен задаче из tasks.json.
+        status = Status.objects.get(name='новый')
+        self.login()
+
+        response = self.client.post(
+            reverse('status_delete', args=[status.pk]), follow=True
+        )
+
+        self.assertRedirects(response, reverse('statuses_index'))
+        self.assertContains(
+            response, 'Невозможно удалить статус, потому что он используется'
+        )
+        self.assertTrue(Status.objects.filter(pk=status.pk).exists())

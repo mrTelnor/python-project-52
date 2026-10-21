@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import ProtectedError
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 
@@ -43,3 +44,18 @@ class AuthorRequiredMixin:
             messages.error(request, self.author_required_message)
             return redirect(self.author_required_url)
         return super().dispatch(request, *args, **kwargs)
+
+
+class ProtectedDeleteMixin:
+    """Не даёт удалить объект, на который ссылаются задачи.
+
+    Для DeleteView: вместо ProtectedError — флеш protected_message
+    и редирект на success_url.
+    """
+
+    def form_valid(self, form):
+        try:
+            return super().form_valid(form)
+        except ProtectedError:
+            messages.error(self.request, self.protected_message)
+            return redirect(self.success_url)

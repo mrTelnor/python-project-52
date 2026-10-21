@@ -5,7 +5,11 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from task_manager.mixins import AuthRequiredMixin, UserSelfRequiredMixin
+from task_manager.mixins import (
+    AuthRequiredMixin,
+    ProtectedDeleteMixin,
+    UserSelfRequiredMixin,
+)
 from task_manager.users.forms import UserCreateForm, UserUpdateForm
 
 
@@ -39,9 +43,14 @@ class UserUpdateView(
 
 
 class UserDeleteView(
-    AuthRequiredMixin, UserSelfRequiredMixin, SuccessMessageMixin, DeleteView
+    AuthRequiredMixin,
+    UserSelfRequiredMixin,
+    ProtectedDeleteMixin,
+    SuccessMessageMixin,
+    DeleteView,
 ):
     model = User
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_index')
     success_message = _('User successfully deleted')
+    protected_message = _('Cannot delete user because it is in use')

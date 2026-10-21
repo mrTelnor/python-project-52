@@ -104,6 +104,8 @@ class TaskCreateTest(TaskTestCase):
             self.assertContains(response, f'id="id_{name}"')
         # Исполнитель в списке выбора — по имени и фамилии.
         self.assertContains(response, f'>{self.jon.get_full_name()}</option>')
+        for label in ('Имя', 'Описание', 'Статус', 'Исполнитель'):
+            self.assertContains(response, f'>{label}:</label>')
 
     def test_create_sets_author(self):
         self.login()
@@ -217,6 +219,7 @@ class TaskDeleteTest(TaskTestCase):
 
         self.assertRedirects(response, reverse('tasks_index'))
         self.assertContains(response, 'Задачу может удалить только ее автор')
+        self.assertNotContains(response, 'Задача успешно удалена')
         self.assertTrue(Task.objects.filter(pk=self.task.pk).exists())
 
     def test_delete_page_by_not_author_forbidden(self):
@@ -232,3 +235,26 @@ class TaskDeleteTest(TaskTestCase):
 
         self.assert_requires_login(response)
         self.assertTrue(Task.objects.filter(pk=self.task.pk).exists())
+
+
+class TaskAccessTest(TaskTestCase):
+    def test_forms_require_login(self):
+        for name, args in (
+            ('task_create', []),
+            ('task_update', [self.task.pk]),
+            ('task_delete', [self.task.pk]),
+        ):
+            with self.subTest(name):
+                response = self.client.get(
+                    reverse(name, args=args), follow=True
+                )
+
+                self.assert_requires_login(response)
+
+    def test_missing_task_not_found(self):
+        self.login()
+        for name in ('task_detail', 'task_update', 'task_delete'):
+            with self.subTest(name):
+                response = self.client.get(reverse(name, args=[999]))
+
+                self.assertEqual(response.status_code, 404)

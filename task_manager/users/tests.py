@@ -196,6 +196,7 @@ class UserInUseDeleteTest(UserTestCase):
             response,
             'Невозможно удалить пользователя, потому что он используется',
         )
+        self.assertNotContains(response, 'Пользователь успешно удален')
         self.assertTrue(User.objects.filter(pk=user.pk).exists())
 
     def test_delete_task_author_forbidden(self):

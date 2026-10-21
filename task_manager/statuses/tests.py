@@ -165,4 +165,5 @@ class StatusInUseDeleteTest(StatusTestCase):
         self.assertContains(
             response, 'Невозможно удалить статус, потому что он используется'
         )
+        self.assertNotContains(response, 'Статус успешно удален')
         self.assertTrue(Status.objects.filter(pk=status.pk).exists())

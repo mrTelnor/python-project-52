@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-21 12:09+0300\n"
+"POT-Creation-Date: 2026-10-21 14:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,10 @@ msgstr "Вы не авторизованы! Пожалуйста, выполни
 #: .\task_manager\mixins.py:29
 msgid "You do not have permission to change this user."
 msgstr "У вас нет прав для изменения"
+
+#: .\task_manager\statuses\forms.py:14
+msgid "A status with this name already exists."
+msgstr "Статус с таким именем уже существует."
 
 #: .\task_manager\statuses\models.py:6 .\task_manager\tasks\models.py:9
 #: .\templates\statuses\index.html:14 .\templates\tasks\index.html:14
@@ -63,6 +67,10 @@ msgstr "Статус успешно удален"
 #: .\task_manager\statuses\views.py:39
 msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
+
+#: .\task_manager\tasks\forms.py:25
+msgid "A task with this name already exists."
+msgstr "Задача с таким именем уже существует."
 
 #: .\task_manager\tasks\models.py:10
 msgid "Description"

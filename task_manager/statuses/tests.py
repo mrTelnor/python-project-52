@@ -73,7 +73,7 @@ class StatusCreateTest(StatusTestCase):
         response = self.client.post(self.url, {'name': 'новый'})
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'уже существует')
+        self.assertContains(response, 'Статус с таким именем уже существует.')
         self.assertEqual(Status.objects.filter(name='новый').count(), 1)
 
     def test_create_requires_login(self):

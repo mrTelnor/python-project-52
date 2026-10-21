@@ -135,7 +135,7 @@ class TaskCreateTest(TaskTestCase):
         response = self.client.post(self.url, self.data)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'уже существует')
+        self.assertContains(response, 'Задача с таким именем уже существует.')
         self.assertEqual(Task.objects.filter(name=self.task.name).count(), 1)
 
     def test_create_requires_login(self):

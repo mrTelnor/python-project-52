@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from task_manager.forms import TailwindFormMixin
 from task_manager.statuses.models import Status
@@ -19,6 +20,10 @@ class TaskForm(TailwindFormMixin, forms.ModelForm):
         fields = ('name', 'description', 'status', 'executor')
         field_classes = {'executor': UserChoiceField}
         widgets = {'description': forms.Textarea(attrs={'rows': 10})}
+        # Встроенное «Задача с таким Имя уже существует.» звучит не по-русски.
+        error_messages = {
+            'name': {'unique': _('A task with this name already exists.')},
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

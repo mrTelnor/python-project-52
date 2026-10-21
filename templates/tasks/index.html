@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "Tasks" %}{% endblock %}
+
+{% block content %}
+  <h1 class="my-4 text-3xl font-bold">{% translate "Tasks" %}</h1>
+  <a href="{% url 'task_create' %}" class="mb-4 inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">{% translate "Create task" %}</a>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead class="border-b border-gray-300">
+        <tr>
+          <th class="px-3 py-2">ID</th>
+          <th class="px-3 py-2">{% translate "Name" %}</th>
+          <th class="px-3 py-2">{% translate "Status" %}</th>
+          <th class="px-3 py-2">{% translate "Author" %}</th>
+          <th class="px-3 py-2">{% translate "Executor" %}</th>
+          <th class="px-3 py-2">{% translate "Created at" %}</th>
+          <th class="px-3 py-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          <tr class="border-b border-gray-200 align-top odd:bg-gray-50">
+            <td class="px-3 py-2">{{ task.pk }}</td>
+            <td class="px-3 py-2"><a href="{% url 'task_detail' task.pk %}" class="text-blue-600 hover:underline">{{ task.name }}</a></td>
+            <td class="px-3 py-2">{{ task.status.name }}</td>
+            <td class="px-3 py-2">{{ task.author.get_full_name|default:task.author.username }}</td>
+            <td class="px-3 py-2">{% if task.executor %}{{ task.executor.get_full_name|default:task.executor.username }}{% endif %}</td>
+            <td class="px-3 py-2">{{ task.created_at|date:"d.m.Y H:i" }}</td>
+            <td class="px-3 py-2">
+              <a href="{% url 'task_detail' task.pk %}" class="block text-blue-600 hover:underline">{% translate "Show" %}</a>
+              <a href="{% url 'task_update' task.pk %}" class="block text-blue-600 hover:underline">{% translate "Update" %}</a>
+              <a href="{% url 'task_delete' task.pk %}" class="block text-blue-600 hover:underline">{% translate "Delete" %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

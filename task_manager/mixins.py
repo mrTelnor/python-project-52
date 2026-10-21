@@ -29,3 +29,17 @@ class UserSelfRequiredMixin:
             )
             return redirect('users_index')
         return super().dispatch(request, *args, **kwargs)
+
+
+class AuthorRequiredMixin:
+    """Действие над объектом доступно только его автору.
+
+    Ставится после AuthRequiredMixin. В представлении задаются
+    author_required_message и author_required_url.
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.get_object().author != request.user:
+            messages.error(request, self.author_required_message)
+            return redirect(self.author_required_url)
+        return super().dispatch(request, *args, **kwargs)

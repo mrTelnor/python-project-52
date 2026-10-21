@@ -46,5 +46,24 @@
         <a href="https://ru.hexlet.io" class="hover:text-gray-600">Hexlet</a>
       </div>
     </footer>
+
+    <script>
+      // Повторная отправка формы (двойной клик, Enter на медленном ответе)
+      // создаёт дубль, а пользователь видит только ответ на второй запрос.
+      document.addEventListener('submit', (event) => {
+        const form = event.target;
+        if (form.dataset.submitted) {
+          event.preventDefault();
+          return;
+        }
+        form.dataset.submitted = 'true';
+      });
+      // Страница, возвращённая кнопкой «Назад», может прийти из кэша.
+      window.addEventListener('pageshow', () => {
+        document.querySelectorAll('form[data-submitted]').forEach((form) => {
+          delete form.dataset.submitted;
+        });
+      });
+    </script>
   </body>
 </html>

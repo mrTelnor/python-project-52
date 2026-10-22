@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "Delete label" %}{% endblock %}
+
+{% block content %}
+  <h1 class="my-4 text-3xl font-bold">{% translate "Delete label" %}</h1>
+  <p class="mb-4">
+    {% blocktranslate with name=object.name %}Are you sure you want to delete {{ name }}?{% endblocktranslate %}
+  </p>
+  <form method="post" action="{% url 'label_delete' object.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="cursor-pointer rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700">{% translate "Yes, delete" %}</button>
+  </form>
+{% endblock %}

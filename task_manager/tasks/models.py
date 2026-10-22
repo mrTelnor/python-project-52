@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 
 
@@ -29,6 +30,13 @@ class Task(models.Model):
         blank=True,
         verbose_name=_('Executor'),
     )
+    labels = models.ManyToManyField(
+        Label,
+        through='TaskLabel',
+        related_name='tasks',
+        blank=True,
+        verbose_name=_('Labels'),
+    )
     created_at = models.DateTimeField(_('Created at'), auto_now_add=True)
 
     class Meta:
@@ -37,3 +45,21 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TaskLabel(models.Model):
+    """Связь задачи с меткой.
+
+    Своя промежуточная таблица нужна ради PROTECT: в обычной связи
+    «многие ко многим» удаление метки молча снимает её с задач.
+    """
+
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    label = models.ForeignKey(Label, on_delete=models.PROTECT)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=('task', 'label'), name='unique_task_label'
+            ),
+        ]

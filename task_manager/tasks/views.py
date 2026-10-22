@@ -5,19 +5,21 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
-    ListView,
     UpdateView,
 )
+from django_filters.views import FilterView
 
 from task_manager.mixins import AuthorRequiredMixin, AuthRequiredMixin
+from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import TaskForm
 from task_manager.tasks.models import Task
 
 
-class TaskListView(AuthRequiredMixin, ListView):
+class TaskListView(AuthRequiredMixin, FilterView):
     queryset = Task.objects.select_related(
         'status', 'author', 'executor'
     ).order_by('id')
+    filterset_class = TaskFilter
     template_name = 'tasks/index.html'
     context_object_name = 'tasks'
 

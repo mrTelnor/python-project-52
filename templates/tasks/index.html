@@ -6,6 +6,16 @@
 {% block content %}
   <h1 class="my-4 text-3xl font-bold">{% translate "Tasks" %}</h1>
   <a href="{% url 'task_create' %}" class="mb-4 inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">{% translate "Create task" %}</a>
+  <form method="get" action="{% url 'tasks_index' %}" class="mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 rounded border border-gray-200 bg-gray-50 p-4">
+    {% for field in filter.form %}
+      {% if field.name == 'self_tasks' %}
+        <div class="flex items-center gap-1">{{ field }} {{ field.label_tag }}</div>
+      {% else %}
+        <div class="flex items-center gap-1">{{ field.label_tag }} {{ field }}</div>
+      {% endif %}
+    {% endfor %}
+    <button type="submit" class="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">{% translate "Show" %}</button>
+  </form>
   <div class="overflow-x-auto">
     <table class="w-full text-left">
       <thead class="border-b border-gray-300">

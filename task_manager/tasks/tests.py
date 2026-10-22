@@ -61,6 +61,92 @@ class TaskListTest(TaskTestCase):
         self.assert_requires_login(response)
 
 
+class TaskFilterTest(TaskTestCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('tasks_index')
+        self.other_task = Task.objects.get(name='Проверить стены')
+
+    def get_tasks(self, params, user=None):
+        self.login(user)
+        response = self.client.get(self.url, params)
+        self.assertEqual(response.status_code, 200)
+        return set(response.context['tasks'])
+
+    def test_form_has_fields(self):
+        self.login()
+
+        response = self.client.get(self.url)
+
+        for name in ('status', 'executor', 'labels', 'self_tasks'):
+            self.assertContains(response, f'name="{name}"')
+            self.assertContains(response, f'id="id_{name}"')
+        for label in ('Статус', 'Исполнитель', 'Метка', 'Только свои задачи'):
+            self.assertContains(response, f'>{label}:</label>')
+        self.assertContains(response, 'type="checkbox"')
+        self.assertContains(response, '<option value="" selected>Не выбрано')
+        self.assertContains(response, f'>{self.jon.get_full_name()}</option>')
+        self.assertContains(response, 'Показать')
+
+    def test_without_filters_shows_all(self):
+        tasks = self.get_tasks({})
+
+        self.assertEqual(tasks, {self.task, self.other_task})
+
+    def test_empty_values_show_all(self):
+        # Так браузер отправляет форму без выбранных значений.
+        tasks = self.get_tasks({'status': '', 'executor': '', 'labels': ''})
+
+        self.assertEqual(tasks, {self.task, self.other_task})
+
+    def test_filter_by_status(self):
+        tasks = self.get_tasks({'status': self.other_task.status.pk})
+
+        self.assertEqual(tasks, {self.other_task})
+
+    def test_filter_by_executor(self):
+        tasks = self.get_tasks({'executor': self.jon.pk})
+
+        self.assertEqual(tasks, {self.task})
+
+    def test_filter_by_label(self):
+        # Метка «срочно» (pk=3) стоит только на первой задаче.
+        self.assertEqual(self.get_tasks({'labels': 3}), {self.task})
+        # Метка «фича» (pk=2) не стоит ни на одной задаче.
+        self.assertEqual(self.get_tasks({'labels': 2}), set())
+
+    def test_self_tasks(self):
+        tasks = self.get_tasks({'self_tasks': 'on'}, user=self.arya)
+
+        self.assertEqual(tasks, {self.other_task})
+
+    def test_filters_combine(self):
+        own_with_status = {'status': self.task.status.pk, 'self_tasks': 'on'}
+        own_other_status = {
+            'status': self.other_task.status.pk,
+            'self_tasks': 'on',
+        }
+
+        self.assertEqual(self.get_tasks(own_with_status), {self.task})
+        self.assertEqual(self.get_tasks(own_other_status), set())
+
+    def test_form_keeps_selected_values(self):
+        self.login()
+
+        response = self.client.get(
+            self.url, {'status': 2, 'labels': 3, 'self_tasks': 'on'}
+        )
+
+        self.assertContains(response, '<option value="2" selected>')
+        self.assertContains(response, '<option value="3" selected>')
+        self.assertContains(response, 'checked')
+
+    def test_filter_requires_login(self):
+        response = self.client.get(self.url, {'status': 1}, follow=True)
+
+        self.assert_requires_login(response)
+
+
 class TaskDetailTest(TaskTestCase):
     def setUp(self):
         super().setUp()

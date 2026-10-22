@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 from task_manager.forms import TailwindFormMixin
+from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
 
@@ -17,7 +18,7 @@ class UserChoiceField(forms.ModelChoiceField):
 class TaskForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('name', 'description', 'status', 'executor')
+        fields = ('name', 'description', 'status', 'executor', 'labels')
         field_classes = {'executor': UserChoiceField}
         widgets = {'description': forms.Textarea(attrs={'rows': 10})}
         # Встроенное «Задача с таким Имя уже существует.» звучит не по-русски.
@@ -32,3 +33,4 @@ class TaskForm(TailwindFormMixin, forms.ModelForm):
         self.fields['executor'].queryset = User.objects.order_by(
             'first_name', 'last_name'
         )
+        self.fields['labels'].queryset = Label.objects.order_by('id')

@@ -23,7 +23,9 @@ class TaskListView(AuthRequiredMixin, ListView):
 
 
 class TaskDetailView(AuthRequiredMixin, DetailView):
-    queryset = Task.objects.select_related('status', 'author', 'executor')
+    queryset = Task.objects.select_related(
+        'status', 'author', 'executor'
+    ).prefetch_related('labels')
     template_name = 'tasks/detail.html'
     context_object_name = 'task'
 

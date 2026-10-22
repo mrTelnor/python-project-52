@@ -21,6 +21,18 @@
         <dt>{% translate "Created at" %}</dt>
         <dd>{{ task.created_at|date:"d.m.Y H:i" }}</dd>
       </dl>
+      {% with labels=task.labels.all %}
+        {% if labels %}
+          <div class="mt-4">
+            <h3 class="font-bold">{% translate "Labels" %}:</h3>
+            <ul class="list-inside list-disc">
+              {% for label in labels %}
+                <li>{{ label.name }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      {% endwith %}
       <div class="mt-4 flex gap-4">
         <a href="{% url 'task_update' task.pk %}" class="text-blue-600 hover:underline">{% translate "Update" %}</a>
         <a href="{% url 'task_delete' task.pk %}" class="text-blue-600 hover:underline">{% translate "Delete" %}</a>

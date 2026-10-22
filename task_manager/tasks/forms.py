@@ -34,3 +34,7 @@ class TaskForm(TailwindFormMixin, forms.ModelForm):
             'first_name', 'last_name'
         )
         self.fields['labels'].queryset = Label.objects.order_by('id')
+        # В Django 6.1 пустой пункт — «- Select an option -», а в русском
+        # каталоге Django перевода для него нет.
+        for name in ('status', 'executor'):
+            self.fields[name].empty_label = _('Not selected')

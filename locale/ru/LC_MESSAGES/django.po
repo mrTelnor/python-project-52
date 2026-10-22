@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-22 21:49+0300\n"
+"POT-Creation-Date: 2026-10-23 00:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,6 +103,10 @@ msgstr "Невозможно удалить статус, потому что о
 #: .\task_manager\tasks\forms.py:26
 msgid "A task with this name already exists."
 msgstr "Задача с таким именем уже существует."
+
+#: .\task_manager\tasks\forms.py:40
+msgid "Not selected"
+msgstr "Не выбрано"
 
 #: .\task_manager\tasks\models.py:11
 msgid "Description"

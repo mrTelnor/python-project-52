@@ -115,6 +115,17 @@ class TaskCreateTest(TaskTestCase):
         for label in ('Имя', 'Описание', 'Статус', 'Исполнитель', 'Метки'):
             self.assertContains(response, f'>{label}:</label>')
 
+    def test_form_empty_choice_in_russian(self):
+        # В Django 6.1 пустой пункт — «- Select an option -» без перевода.
+        self.login()
+
+        response = self.client.get(self.url)
+
+        self.assertContains(
+            response, '<option value="" selected>Не выбрано</option>', count=2
+        )
+        self.assertNotContains(response, 'Select an option')
+
     def test_create_sets_author(self):
         self.login()
 

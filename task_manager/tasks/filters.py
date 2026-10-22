@@ -19,7 +19,8 @@ class ExecutorFilter(django_filters.ModelChoiceFilter):
 
 
 class TaskFilter(django_filters.FilterSet):
-    select_class = 'border-gray-500 px-3 py-2'
+    # pr-10 оставляет место под стрелку списка: с px-3 текст наезжает на неё.
+    select_class = 'min-w-48 border-gray-500 py-2 pl-3 pr-10'
 
     status = django_filters.ModelChoiceFilter(
         queryset=Status.objects.order_by('id'),

@@ -22,5 +22,21 @@
       "executor": null,
       "created_at": "2026-10-20T10:05:00Z"
     }
+  },
+  {
+    "model": "tasks.tasklabel",
+    "pk": 1,
+    "fields": {
+      "task": 1,
+      "label": 1
+    }
+  },
+  {
+    "model": "tasks.tasklabel",
+    "pk": 2,
+    "fields": {
+      "task": 1,
+      "label": 3
+    }
   }
 ]

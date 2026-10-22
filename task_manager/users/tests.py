@@ -181,7 +181,7 @@ class UserDeleteTest(UserTestCase):
 
 class UserInUseDeleteTest(UserTestCase):
     # tyrion — автор задачи, jon — её исполнитель.
-    fixtures = ['users.json', 'statuses.json', 'tasks.json']
+    fixtures = ['users.json', 'statuses.json', 'labels.json', 'tasks.json']
 
     def assert_delete_forbidden(self, username):
         user = User.objects.get(username=username)

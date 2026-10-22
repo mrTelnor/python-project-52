@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from task_manager.tasks.models import Task
+from task_manager.labels.models import Label
+from task_manager.tasks.models import Task, TaskLabel
 
 # Хранилище без манифеста: тесты не зависят от collectstatic.
 STORAGES_WITHOUT_MANIFEST = {
@@ -18,8 +19,9 @@ NOT_LOGGED_IN = 'Вы не авторизованы! Пожалуйста, вы�
 
 @override_settings(STORAGES=STORAGES_WITHOUT_MANIFEST)
 class TaskTestCase(TestCase):
-    # Задача 1: автор tyrion, исполнитель jon. Задача 2: автор arya.
-    fixtures = ['users.json', 'statuses.json', 'tasks.json']
+    # Задача 1: автор tyrion, исполнитель jon, метки «ошибка» и «срочно».
+    # Задача 2: автор arya, без меток.
+    fixtures = ['users.json', 'statuses.json', 'labels.json', 'tasks.json']
 
     def setUp(self):
         self.tyrion = User.objects.get(username='tyrion')
@@ -75,6 +77,10 @@ class TaskDetailTest(TaskTestCase):
         self.assertContains(response, self.task.status.name)
         self.assertContains(response, self.tyrion.get_full_name())
         self.assertContains(response, self.jon.get_full_name())
+        self.assertContains(response, 'Метки')
+        for name in ('ошибка', 'срочно'):
+            self.assertContains(response, name)
+        self.assertNotContains(response, 'фича')
 
     def test_detail_requires_login(self):
         response = self.client.get(self.url, follow=True)
@@ -99,12 +105,14 @@ class TaskCreateTest(TaskTestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        for name in ('name', 'description', 'status', 'executor'):
+        for name in ('name', 'description', 'status', 'executor', 'labels'):
             self.assertContains(response, f'name="{name}"')
             self.assertContains(response, f'id="id_{name}"')
         # Исполнитель в списке выбора — по имени и фамилии.
         self.assertContains(response, f'>{self.jon.get_full_name()}</option>')
-        for label in ('Имя', 'Описание', 'Статус', 'Исполнитель'):
+        self.assertContains(response, '>фича</option>')
+        self.assertContains(response, 'multiple')
+        for label in ('Имя', 'Описание', 'Статус', 'Исполнитель', 'Метки'):
             self.assertContains(response, f'>{label}:</label>')
 
     def test_create_sets_author(self):
@@ -127,6 +135,26 @@ class TaskCreateTest(TaskTestCase):
 
         self.assertRedirects(response, reverse('tasks_index'))
         self.assertIsNone(Task.objects.get(name='Собрать войско').executor)
+
+    def test_create_with_labels(self):
+        self.login()
+        self.data['labels'] = [1, 2]
+
+        response = self.client.post(self.url, self.data, follow=True)
+
+        self.assertRedirects(response, reverse('tasks_index'))
+        task = Task.objects.get(name='Собрать войско')
+        self.assertQuerySetEqual(
+            task.labels.order_by('pk'), ['ошибка', 'фича'], transform=str
+        )
+
+    def test_create_without_labels(self):
+        self.login()
+
+        self.client.post(self.url, self.data)
+
+        task = Task.objects.get(name='Собрать войско')
+        self.assertFalse(task.labels.exists())
 
     def test_duplicate_name(self):
         self.login()
@@ -170,6 +198,32 @@ class TaskUpdateTest(TaskTestCase):
         self.assertEqual(self.task.executor, self.arya)
         self.assertEqual(self.task.author, self.tyrion)
 
+    def test_update_labels(self):
+        self.login()
+        self.data['labels'] = [2]
+
+        self.client.post(self.url, self.data)
+
+        self.assertQuerySetEqual(
+            self.task.labels.all(), ['фича'], transform=str
+        )
+
+    def test_update_removes_all_labels(self):
+        # Без выбранных меток поле labels в форме не отправляется.
+        self.login()
+
+        self.client.post(self.url, self.data)
+
+        self.assertFalse(self.task.labels.exists())
+
+    def test_update_form_shows_selected_labels(self):
+        self.login()
+
+        response = self.client.get(self.url)
+
+        self.assertContains(response, '<option value="1" selected>ошибка')
+        self.assertContains(response, '<option value="2">фича')
+
     def test_update_to_existing_name(self):
         self.login()
         self.data['name'] = 'Проверить стены'
@@ -210,6 +264,9 @@ class TaskDeleteTest(TaskTestCase):
         self.assertRedirects(response, reverse('tasks_index'))
         self.assertContains(response, 'Задача успешно удалена')
         self.assertFalse(Task.objects.filter(pk=self.task.pk).exists())
+        # Метки остаются, удаляются только их связи с задачей.
+        self.assertEqual(Label.objects.count(), 3)
+        self.assertFalse(TaskLabel.objects.exists())
 
     def test_delete_by_not_author_forbidden(self):
         # jon — исполнитель задачи, но не автор.

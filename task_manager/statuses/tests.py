@@ -150,7 +150,7 @@ class StatusDeleteTest(StatusTestCase):
 
 
 class StatusInUseDeleteTest(StatusTestCase):
-    fixtures = ['users.json', 'statuses.json', 'tasks.json']
+    fixtures = ['users.json', 'statuses.json', 'labels.json', 'tasks.json']
 
     def test_delete_status_in_use_forbidden(self):
         # Статус «новый» назначен задаче из tasks.json.

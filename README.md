@@ -1,6 +1,7 @@
 # Менеджер задач (Python)
 
 [![hexlet-check](https://github.com/mrTelnor/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/mrTelnor/python-project-52/actions)
+[![CI](https://github.com/mrTelnor/python-project-52/actions/workflows/ci.yml/badge.svg)](https://github.com/mrTelnor/python-project-52/actions/workflows/ci.yml)
 
 На практике узнаете о проектировании баз данных, PaaS, мониторинге ошибок, ORM, фреймворке Django, шаблонизации и Tailwind CSS.
 
@@ -53,7 +54,13 @@ make setup
 ```powershell
 make start   # запустить сервер разработки: http://127.0.0.1:8000/
 make lint    # проверить код Ruff
+make test    # запустить тесты
+make test-coverage  # запустить тесты и проверить покрытие
 ```
+
+Workflow CI запускает Ruff и тесты на каждый push и pull request.
+Проверка завершается с ошибкой при покрытии кода ниже 75%.
+В покрытие входит пакет `task_manager`, кроме тестов и миграций.
 
 ## Сбор ошибок
 

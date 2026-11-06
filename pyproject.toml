@@ -16,6 +16,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "coverage>=7.17.2",
     "ruff>=0.16.7",
 ]
 
@@ -25,3 +26,12 @@ extend-exclude = ["*/migrations/*", "task_manager/settings.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.coverage.run]
+source = ["task_manager"]
+omit = ["*/tests.py", "*/migrations/*"]
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
+precision = 2

@@ -27,4 +27,8 @@ lint:
 test:
 	uv run python manage.py test
 
-.PHONY: install tailwind-build collectstatic migrate setup build render-start start lint test
+test-coverage:
+	uv run coverage run manage.py test
+	uv run coverage report
+
+.PHONY: install tailwind-build collectstatic migrate setup build render-start start lint test test-coverage

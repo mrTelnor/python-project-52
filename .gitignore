@@ -5,6 +5,9 @@ docs/
 .venv/
 __pycache__/
 .ruff_cache/
+.coverage
+htmlcov/
+coverage.xml
 
 # Переменные окружения
 .env

@@ -14,11 +14,26 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import sentry_sdk
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Читаем переменные окружения из .env, если файл есть.
 # На Render переменные приходят из настроек сервиса.
 load_dotenv()
+
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        send_default_pii=False,
+        include_local_variables=False,
+        max_request_body_size='never',
+        traces_sample_rate=0,
+        send_client_reports=False,
+        auto_session_tracking=False,
+    )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

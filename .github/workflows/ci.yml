@@ -39,7 +39,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: postgresql://postgres@127.0.0.1:${{ job.services.postgres.ports[5432] }}/postgres
       SENTRY_DSN: ''
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -50,6 +49,8 @@ jobs:
       - name: Установка зависимостей
         run: uv sync --locked
       - name: Проверка подключения к PostgreSQL
+        env:
+          DATABASE_URL: postgresql://postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
         run: >-
           uv run python manage.py shell -c
           "from django.db import connection;
@@ -57,4 +58,6 @@ jobs:
           connection.ensure_connection();
           print('PostgreSQL: подключение установлено')"
       - name: Тесты PostgreSQL
+        env:
+          DATABASE_URL: postgresql://postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
         run: make test
